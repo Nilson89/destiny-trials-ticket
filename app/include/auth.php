@@ -31,7 +31,11 @@ function do_webauth($method, $username, $password, $cookie_file) {
         CURLOPT_URL => $url,
     ));
     curl_exec($ch);
-    $redirect_url = curl_getinfo($ch)['redirect_url'];
+    $curl_info = curl_getinfo($ch);
+    #echo "<pre>";
+    #var_dump($curl_info);
+    #echo "</pre>";
+    $redirect_url = $curl_info['redirect_url'];
     curl_close($ch);
 
     // Bungie Cookies are still valid
@@ -126,7 +130,11 @@ function do_webauth($method, $username, $password, $cookie_file) {
         // Login successful, "bungleatk" should be set
         // Facebook/PSN should return with ?code=
         // Xbox should have ?wa=wsignin1.0
-        return strpos($result_url, $url) === 0;
+        if (empty($result_url)
+            or strpos($result_url, $url) === 0) {
+            return true;
+        }
+        return false;
     }
     // Valid Third Party Cookies, re-authenticating Bungie Login
     $ch = curl_init();
