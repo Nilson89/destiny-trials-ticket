@@ -36,8 +36,12 @@ function get_trials_ticket($type, $account, $character, $apiKey)
     }
 
     if (isset($data['Response'])
-        && isset($data['Response']['data'])) {
-        $ticket = $data['Response']['data'];
+        && isset($data['Response']['data'])
+        && isset($data['Response']['data']['activities'])
+        && isset($data['Response']['data']['activities']['trials'])
+        && isset($data['Response']['data']['activities']['trials']['extended'])
+        && isset($data['Response']['data']['activities']['trials']['extended']['scoreCard'])) {
+        $ticket = $data['Response']['data']['activities']['trials']['extended']['scoreCard'];
     } else {
         return false;
     }
